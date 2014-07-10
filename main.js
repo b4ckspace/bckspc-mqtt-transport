@@ -66,7 +66,7 @@ settings.snmp.mappings.forEach(function(entry) {
       community: entry.community || settings.snmp.defaults.community
    });
 
-   var random = parseInt(Math.random()*10000.0, 10);
+   var random = parseInt(Math.random()*4200.0, 10);
    setInterval(function() {
 
       logger.info('Trying to retrieve ' + entry.oid + ' from host ' + entry.host);
