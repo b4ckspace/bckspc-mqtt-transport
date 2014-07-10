@@ -27,7 +27,7 @@ Object.keys(settings.udpio.mappings).forEach(function(namespace) {
       logger.info('Attaching to event ' + namespace + '/' + map.key);
       udpio.on(map.key, function(value) {
          logger.info('Event ' + namespace + '/' + map.key + ' triggered. Value: ' + value);
-         mqttClient.publish(map.dest, value);
+         mqttClient.publish(map.dest, '' + value);
       });
    });
 
@@ -79,7 +79,7 @@ settings.snmp.mappings.forEach(function(entry) {
          var value = varbinds[0].value;
          logger.info('Retrieved ' + entry.oid + ' from host ' + entry.host + ' with value "' + value + '"');
 
-         mqttClient.publish(entry.dest, value);
+         mqttClient.publish(entry.dest, '' + value);
       });
 
    }, (entry.interval || settings.snmp.defaults.interval) * 1000);
