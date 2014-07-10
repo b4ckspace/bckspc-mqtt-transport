@@ -40,12 +40,12 @@ var statusApi = new StatusAPI(settings.statusApi.url, settings.statusApi.interva
 
 statusApi.on('space_opened', function() {
    logger.info('Status Event "space_opened" triggered');
-   mqttClient.publish('sensor/space/status', true);
+   mqttClient.publish('sensor/space/status', 'open');
 });
 
 statusApi.on('space_closed', function() {
    logger.info('Status Event "space_closed" triggered');
-   mqttClient.publish('sensor/space/status', false);
+   mqttClient.publish('sensor/space/status', 'closed');
 });
 
 statusApi.on('member_count', function(count) {
