@@ -1,0 +1,17 @@
+{
+  "name": "bckspc-mqtt-transport",
+  "version": "0.1.0",
+  "description": "Main purpose is to transfer old events/infrastructure events to our the mqtt system.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "schinken",
+  "license": "MIT",
+  "dependencies": {
+    "bckspc-status": "https://github.com/schinken/nodejs-bckspc-status/tarball/master",
+    "mqtt": "~0.3.10",
+    "snmp-native": "~1.0.16",
+    "winston": "~0.7.3"
+  }
+}
