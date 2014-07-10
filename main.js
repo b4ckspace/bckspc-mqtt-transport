@@ -66,6 +66,7 @@ settings.snmp.mappings.forEach(function(entry) {
       community: entry.community || settings.snmp.defaults.community
    });
 
+   var random = parseInt(Math.random()*10000.0, 10);
    setInterval(function() {
 
       logger.info('Trying to retrieve ' + entry.oid + ' from host ' + entry.host);
@@ -82,5 +83,5 @@ settings.snmp.mappings.forEach(function(entry) {
          mqttClient.publish(entry.dest, '' + value);
       });
 
-   }, (entry.interval || settings.snmp.defaults.interval) * 1000);
+   }, (entry.interval || settings.snmp.defaults.interval) * 1000 + random);
 });
