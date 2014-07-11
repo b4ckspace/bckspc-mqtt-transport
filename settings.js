@@ -18,7 +18,11 @@ module.exports = {
    },
    mqtt: {
       host: 'mqtt',
-      port: 1883
+      port: 1883,
+      options: {
+         retain: true,
+         qos: 1
+      }
    },
    statusApi: {
       url: 'http://status.bckspc.de/status.php?response=json',

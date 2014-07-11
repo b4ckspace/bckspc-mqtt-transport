@@ -49,7 +49,7 @@ Object.keys(settings.udpio.mappings).forEach(function(namespace) {
             logger.info('Event ' + namespace + '/' + map.key + ' value transformed from ' + value + ' to ' + newValue);
          }
 
-         mqttClient.publish(map.dest, '' + newValue);
+         mqttClient.publish(map.dest, '' + newValue, settings.mqtt.options);
       });
    });
 
@@ -62,17 +62,17 @@ var statusApi = new StatusAPI(settings.statusApi.url, settings.statusApi.interva
 
 statusApi.on('space_opened', function() {
    logger.info('Status Event "space_opened" triggered');
-   mqttClient.publish('sensor/space/status', 'open');
+   mqttClient.publish('sensor/space/status', 'open', settings.mqtt.options);
 });
 
 statusApi.on('space_closed', function() {
    logger.info('Status Event "space_closed" triggered');
-   mqttClient.publish('sensor/space/status', 'closed');
+   mqttClient.publish('sensor/space/status', 'closed', settings.mqtt.options);
 });
 
 statusApi.on('member_count', function(count) {
    logger.info('Status member count changed to ' + count);
-   mqttClient.publish('sensor/space/member/count', ''+count);
+   mqttClient.publish('sensor/space/member/count', ''+count, settings.mqtt.options);
 });
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ settings.snmp.mappings.forEach(function(entry) {
             lastValue = value;
 
             logger.info('Retrieved ' + entry.oid + ' from host ' + entry.host + ' with value "' + value + '"');
-            mqttClient.publish(entry.dest, '' + value);
+            mqttClient.publish(entry.dest, '' + value, settings.mqtt.options);
          } else {
             logger.info('Unchanged value retrieved ' + entry.oid + ' from host ' + entry.host + '. Skipping');
          }
