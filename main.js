@@ -17,6 +17,22 @@ var mqttClient = mqtt.createClient(settings.mqtt.port, settings.mqtt.host);
 ///////////////////////////////////////////////////////////////////////////////
 // Receive UDPIO Events
 
+function udpioTransformer(key, value) {
+
+   switch(key) {
+      case 'backlock':
+      case 'doorframe':
+      case 'doorlock':
+         return (value)? 'open' : 'closed';
+
+      case 'doorbutton':
+      case 'doorbell':
+         return (value)? 'pressed' : 'released';
+   }
+
+   return value;
+}
+
 Object.keys(settings.udpio.mappings).forEach(function(namespace) {
    var events = settings.udpio.mappings[namespace];
 
@@ -27,7 +43,13 @@ Object.keys(settings.udpio.mappings).forEach(function(namespace) {
       logger.info('Attaching to event ' + namespace + '/' + map.key);
       udpio.on(map.key, function(value) {
          logger.info('Event ' + namespace + '/' + map.key + ' triggered. Value: ' + value);
-         mqttClient.publish(map.dest, '' + value);
+
+         var newValue = udpioTransformer(map.key, value);
+         if(value != newValue) {
+            logger.info('Event ' + namespace + '/' + map.key + ' value transformed from ' + value + ' to ' + newValue);
+         }
+
+         mqttClient.publish(map.dest, '' + newValue);
       });
    });
 
