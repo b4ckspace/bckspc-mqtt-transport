@@ -67,6 +67,8 @@ settings.snmp.mappings.forEach(function(entry) {
    });
 
    var random = parseInt(Math.random()*4200.0, 10);
+   var lastValue = false;
+
    setInterval(function() {
 
       logger.info('Trying to retrieve ' + entry.oid + ' from host ' + entry.host);
@@ -78,9 +80,15 @@ settings.snmp.mappings.forEach(function(entry) {
          }
 
          var value = varbinds[0].value;
-         logger.info('Retrieved ' + entry.oid + ' from host ' + entry.host + ' with value "' + value + '"');
 
-         mqttClient.publish(entry.dest, '' + value);
+         if(lastValue === false || lastValue != value) {
+            lastValue = value;
+
+            logger.info('Retrieved ' + entry.oid + ' from host ' + entry.host + ' with value "' + value + '"');
+            mqttClient.publish(entry.dest, '' + value);
+         } else {
+            logger.info('Unchanged value retrieved ' + entry.oid + ' from host ' + entry.host + '. Skipping');
+         }
       });
 
    }, (entry.interval || settings.snmp.defaults.interval) * 1000 + random);
