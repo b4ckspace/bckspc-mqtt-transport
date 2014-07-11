@@ -50,7 +50,7 @@ statusApi.on('space_closed', function() {
 
 statusApi.on('member_count', function(count) {
    logger.info('Status member count changed to ' + count);
-   mqttClient.publish('sensor/space/member/count', count);
+   mqttClient.publish('sensor/space/member/count', ''+count);
 });
 
 ///////////////////////////////////////////////////////////////////////////////
