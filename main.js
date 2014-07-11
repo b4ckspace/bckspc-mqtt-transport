@@ -20,10 +20,10 @@ var mqttClient = mqtt.createClient(settings.mqtt.port, settings.mqtt.host);
 function udpioTransformer(key, value) {
 
    switch(key) {
-      case 'backlock':
       case 'doorframe':
+      case 'backlock':
       case 'doorlock':
-         return (value)? 'open' : 'closed';
+         return (value)? 'closed' : 'open';
 
       case 'doorbutton':
       case 'doorbell':
