@@ -85,7 +85,7 @@ settings.snmp.mappings.forEach(function(entry) {
    var random = parseInt(Math.random()*4200.0, 10);
    var lastValue = false;
 
-   setInterval(function() {
+   function pollSnmpValue() {
 
       var snmpSession = new snmp.Session({
          host: entry.host,
@@ -113,7 +113,12 @@ settings.snmp.mappings.forEach(function(entry) {
          }
 
          snmpSession.close();
+
+         setTimeout(pollSnmpValue, (entry.interval || settings.snmp.defaults.interval) * 1000 + random);
       });
 
-   }, (entry.interval || settings.snmp.defaults.interval) * 1000 + random);
+   };
+
+   pollSnmpValue();
+
 });
