@@ -82,16 +82,16 @@ settings.snmp.mappings.forEach(function(entry) {
 
    logger.info('Subscribe to SNMP oid ' + entry.oid + ' on host ' + entry.host);
 
-   var snmpSession = new snmp.Session({
-      host: entry.host,
-      port: entry.port || settings.snmp.defaults.port,
-      community: entry.community || settings.snmp.defaults.community
-   });
-
    var random = parseInt(Math.random()*4200.0, 10);
    var lastValue = false;
 
    setInterval(function() {
+
+      var snmpSession = new snmp.Session({
+         host: entry.host,
+         port: entry.port || settings.snmp.defaults.port,
+         community: entry.community || settings.snmp.defaults.community
+      });
 
       logger.info('Trying to retrieve ' + entry.oid + ' from host ' + entry.host);
 
@@ -111,6 +111,8 @@ settings.snmp.mappings.forEach(function(entry) {
          } else {
             logger.info('Unchanged value retrieved ' + entry.oid + ' from host ' + entry.host + '. Skipping');
          }
+
+         snmpSession.close();
       });
 
    }, (entry.interval || settings.snmp.defaults.interval) * 1000 + random);
